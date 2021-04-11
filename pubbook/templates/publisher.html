@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>publishers</title>
+  </head>
+  <body>
+    <h1>Publishers!</h1>
+    <div class="HS">
+      {% if publisher %}
+        <table>
+          {% for x in publisher %}
+          <tr>
+            <td>{{x.publisher_id}}</td>
+            <td>{{x.pub_name}}</td>
+            <td>{{x.address}}</td>
+            <td>{{x.phone}}</td>
+          </tr>
+          {% endfor %}
+        </table>
+      {% else %}
+        <p>Empty</p>
+      {% endif %}
+
+    </div>
+    <a href="addpub.html">Add a Publisher</a>
+
+  </body>
+</html>
