@@ -14,6 +14,14 @@ def books(request):
 def publishers(request):
     publisher = Publisher.objects.all()
     context = {'publisher':publisher}
+
+    if request.method == "POST":
+        pchklst = request.POST.getlist("pubdelete")
+        print(pchklst)
+        for item in pchklst:
+            Publisher.objects.filter(publisher_id=item).delete()
+
+
     return render(request,'publisher.html',context)
 
 def addbook(request):
@@ -40,6 +48,8 @@ def addpublisher(request):
 
 def delete_book(request):
 
+    book = Book.objects.all()
+
     if request.method == "POST":
 
         chklst = request.POST.getlist("bookdelete")
@@ -48,6 +58,6 @@ def delete_book(request):
             for item in Book.objects.all():
                 if instance == item.book_id:
                     item.delete()
-                    chklst.pop(instance)
+                    print('it reached this step')
 
     return render(request,'books.html',{'book':book})

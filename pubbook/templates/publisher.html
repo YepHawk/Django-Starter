@@ -8,9 +8,12 @@
     <h1>Publishers!</h1>
     <div class="HS">
       {% if publisher %}
+      <form method="POST">
         <table>
           {% for x in publisher %}
+          {% csrf_token %}
           <tr>
+            <td><input type="checkbox" name="pubdelete" value="{{x.publisher_id}}"></td>
             <td>{{x.publisher_id}}</td>
             <td>{{x.pub_name}}</td>
             <td>{{x.address}}</td>
@@ -18,6 +21,8 @@
           </tr>
           {% endfor %}
         </table>
+        <input type="submit" value="Delete Selected Books">
+      </form>
       {% else %}
         <p>Empty</p>
       {% endif %}
