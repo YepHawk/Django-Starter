@@ -1,15 +1,16 @@
 from django.shortcuts import render
 from appone.models import Book,Publisher
 from appone.forms import NewBook,NewPublisher
+from django.views import View
 
 # Create your views here.
 def index(request):
     return render(request,'index.html')
 
-def books(request):
-    book = Book.objects.all()
-    context = {'book':book}
-    return render(request,'books.html',context)
+# def books(request):
+#     book = Book.objects.all()
+#     context = {'book':book}
+#     return render(request,'books.html',context)
 
 def publishers(request):
     publisher = Publisher.objects.all()
@@ -46,18 +47,29 @@ def addpublisher(request):
             print('Error: Invalid')
     return render(request,'addpub.html',{'pub':pub})
 
-def delete_book(request):
 
-    book = Book.objects.all()
+class BookCh(View):
+    def get(self,request):
+        book = Book.objects.all()
+        context = {'book':book}
+        return render(request,'books.html',context)
 
-    if request.method == "POST":
-
+    def post(self,request):
         chklst = request.POST.getlist("bookdelete")
         print(chklst)
-        for instance in chklst:  #instance is only ID, need to find object
-            for item in Book.objects.all():
-                if instance == item.book_id:
-                    item.delete()
-                    print('it reached this step')
+        for item in chklst:
+            Book.objects.filter(book_id=item).delete()
+        return self.get(request)
 
-    return render(request,'books.html',{'book':book})
+class PubCh(View):
+    def get(self,request):
+        publisher = Publisher.objects.all()
+        context = {'publisher':publisher}
+        return render(request,'publisher.html',context)
+
+    def post(self,request):
+        pchklst = request.POST.getlist("pubdelete")
+        print(pchklst)
+        for item in pchklst:
+            Publisher.objects.filter(publisher_id=item).delete()
+        return self.get(request)
